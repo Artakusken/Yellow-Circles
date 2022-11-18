@@ -1,19 +1,20 @@
 import sys
 from random import randint
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QPainter, QBrush, QColor, QPolygon
 from PyQt5 import uic
 
 
-class Example(QWidget):
+class App(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('antiplagiat.ui', self)
+        uic.loadUi('UI.ui', self)
         self.setMouseTracking(True)
-        self.coords_ = []
+        self.coords_ = (250, 250)
         self.qp = QPainter()
         self.flag = False
+        self.usefulButton.clicked.connect(self.drawf)
 
     def drawf(self):
         self.flag = True
@@ -30,17 +31,12 @@ class Example(QWidget):
         color = QColor.fromRgb(210, 210, 20)
         size = randint(5, 180)
         self.qp.setBrush(QBrush(color))
-        self.qp.setBrush(10)
-        x, y = self.coords_
-        b = randint(50, 150)
-        a = randint(50, 250)
-        coords = QPolygon([QPoint(x, y + b), QPoint(x + a / 2, y - b), QPoint(x + a, y + b)])
-        self.qp.setBrush(QBrush(color))
-        self.qp.drawPolygon(coords)
+        self.qp.drawEllipse(*self.coords_, size, size)
 
-    def mousePressEvent(self, event):
-        self.coords_ = [event.x(), event.y()]
-        self.drawf()
 
-    def mouseMoveEvent(self, event):
-        self.coords_ = [event.x(), event.y()]
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    k = App()
+    k.show()
+    sys.exit(app.exec())
+
