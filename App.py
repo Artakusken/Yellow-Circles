@@ -3,13 +3,14 @@ from random import randint
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QPainter, QBrush, QColor, QPolygon
-from PyQt5 import uic
+from UI import Ui_MainWindow
 
 
-class App(QMainWindow):
+class App(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('UI.ui', self)
+        # uic.loadUi('UI.ui', self)
+        self.setupUi(self)
         self.setMouseTracking(True)
         self.coords_ = (250, 250)
         self.qp = QPainter()
@@ -28,7 +29,7 @@ class App(QMainWindow):
             self.qp.end()
 
     def draw(self):
-        color = QColor.fromRgb(210, 210, 20)
+        color = QColor.fromRgb(randint(0, 255), randint(0, 255), randint(0, 255))
         size = randint(5, 180)
         self.qp.setBrush(QBrush(color))
         self.qp.drawEllipse(*self.coords_, size, size)
@@ -39,4 +40,3 @@ if __name__ == "__main__":
     k = App()
     k.show()
     sys.exit(app.exec())
-
